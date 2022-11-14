@@ -5,11 +5,11 @@ module.exports = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'i.imgur.com',
+        hostname: 'static.tvmaze.com',
         port: '',
         pathname: '/**',
       },
     ],
-    domains: ['i.imgur.com', 'photos.marinetraffic.com', 'imgur.com'],
+    domains: ['static.tvmaze.com'],
   },
 }

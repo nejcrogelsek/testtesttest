@@ -1,41 +1,33 @@
+import Rating from '@mui/material/Rating'
 import { NextPage } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import { FaArrowRight } from 'react-icons/fa'
 
-import { ShipType } from '../../../types/Ship'
+import { ScheduleType } from '../../../types/Schedule'
 
-const Card: NextPage<ShipType> = ({ id, image, name, type }) => {
+const Card: NextPage<ScheduleType> = ({ id, name, show }) => {
   return (
     <Link
       className="cursor-pointer"
       href={{
-        pathname: `/${id}`,
-        query: {
-          name,
-          image,
-          type,
-        },
+        pathname: `/${show.id}`,
       }}
-      as={`/${id}`}
+      as={`/${show.id}`}
     >
       <a>
         <div className="h-[325px] flex flex-col rounded-lg shadow-md">
           <div className="relative h-full">
             <Image
               className="rounded-t-lg object-cover"
-              src={image ?? '/images/no-image.png'}
+              src={show.image.medium ?? '/images/no-image.png'}
               alt={name}
               layout="fill"
             />
           </div>
-          <div className="flex flex-row justify-between items-center p-5">
+          <div className="flex flex-row justify-between items-center p-2 sm:p-4 md:p-5">
             <div className="flex-1">
-              <h2 className="font-list-title text-black">{name}</h2>
-              <p className="font-list-subtitle text-blue-3 opacity-50">{type}</p>
-            </div>
-            <div className="bg-blue-1 rounded-full p-2 shadow-xs cursor-pointer">
-              <FaArrowRight />
+              <Rating className="!hidden sm:!flex !text-base" name="read-only" value={show.rating.average} readOnly />
+              <h3 className="font-list-title text-sm md:text-base text-black mt-1">{name}</h3>
             </div>
           </div>
         </div>

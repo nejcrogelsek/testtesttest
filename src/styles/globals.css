@@ -18,11 +18,11 @@
     }
 
     .font-title {
-        @apply font-nunito font-medium text-title leading-[54.56px];
+        @apply font-nunito font-bold text-xl sm:text-title leading-[54.56px];
     }
 
     .font-subtitle {
-        @apply font-nunito font-medium text-subtitle leading-[24px];
+        @apply font-nunito font-bold text-subtitle leading-[24px];
     }
 
     .font-list-title {

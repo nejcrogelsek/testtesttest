@@ -1,14 +1,17 @@
 import type { NextPage } from 'next'
 
-import { Ships } from '../../../types/Ship'
+import { Schedules } from '../../../types/Schedule'
 import Card from '../Card/Card'
 
-const CardList: NextPage<Ships> = ({ ships }) => {
+const CardList: NextPage<Schedules> = ({ schedules }) => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
-      {ships.map((ship) => (
-        <Card key={ship.id} {...ship} />
-      ))}
+    <div className="flex flex-col mb-12">
+      <h2 className="font-title">Last Added Shows</h2>
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-4">
+        {schedules.map((schedule) => (
+          <Card key={schedule.id} {...schedule} />
+        ))}
+      </div>
     </div>
   )
 }

@@ -1,11 +1,9 @@
 import '../styles/globals.css'
 
-import { ApolloProvider } from '@apollo/client'
 import ProgressBar from '@badrap/bar-of-progress'
 import type { AppProps } from 'next/app'
 import { Router } from 'next/router'
-
-import apolloClient from '../config/ApolloClient'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 const progress = new ProgressBar({
   size: 4,
@@ -16,12 +14,13 @@ const progress = new ProgressBar({
 
 Router.events.on('routeChangeStart', progress.start)
 Router.events.on('routeChangeComplete', progress.finish)
+const queryClient = new QueryClient()
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
-    <ApolloProvider client={apolloClient}>
+    <QueryClientProvider client={queryClient}>
       <Component {...pageProps} />
-    </ApolloProvider>
+    </QueryClientProvider>
   )
 }
 

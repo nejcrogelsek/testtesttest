@@ -1,87 +1,99 @@
-import { useQuery } from '@apollo/client'
+import Rating from '@mui/material/Rating'
 import type { NextPage } from 'next'
-import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { FaArrowLeft } from 'react-icons/fa'
+import { useEffect, useState } from 'react'
 
-import CardDetail from '../../components/ui/CardDetail/CardDetail'
+import CrewList from '../../components/ui/CrewList/CrewList'
 import LoadingSpinner from '../../components/ui/LoadingSpinner/LoadingSpinner'
-import { GET_SHIP_BY_ID } from '../../graphql/Ship'
+import { useShow } from '../../hooks/useShow'
+import { ShowType } from '../../types/Show'
 
 const ShipDetail: NextPage = () => {
   const router = useRouter()
-  const { id, name, image, type } = router.query
+  const { id } = router.query
+  const { data, isLoading, isError, error } = useShow({ id: id as string })
+  const [show, setShow] = useState<ShowType>()
 
-  const { error, data, loading } = useQuery(GET_SHIP_BY_ID, {
-    variables: { id: id },
-  })
+  useEffect(() => {
+    if (data) {
+      setShow(data.data)
+    }
+    if (show) {
+      document.getElementById('summary')!.innerHTML = show.summary
+    }
+  }, [data, show])
 
-  if (error) return <div>Error found</div>
+  if (isLoading) return <LoadingSpinner />
+  if (isError && error instanceof Error) {
+    alert(error.message)
+  }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center">
-      {loading && <LoadingSpinner />}
-      <main className="w-full">
-        <CardDetail
-          id={id ?? data?.ship.id}
-          image={image ?? data?.ship.image}
-          name={name ?? data?.ship.name}
-          type={type ?? data?.ship.type}
-        />
-        <div className="max-w-screen-2xl mx-auto w-full">
-          <div className="mb-36 px-4">
-            <div className="flex flex-row justify-start items-center">
-              <div className="info-mission flex-row items-center mx-auto">
-                <h2 className="font-playful">Basic info</h2>
-                <div className="relative w-7 h-7 -mb-[14px] ml-[10px]">
-                  <Image src="/images/arrow.svg" layout="fill" />
-                </div>
-              </div>
+    <div>
+      <article className="w-full bg-gray-200">
+        <div className="max-w-screen-2xl mx-auto w-full px-4 py-10 pb-28 flex flex-col">
+          <h1 className="font-title text-lg font-black mb-6">TV Bland</h1>
+          <div className="flex flex-col sm:flex-row justify-between">
+            <div className="w-full flex justify-center sm:w-[30%] xl:relative">
+              <img
+                className="xl:absolute xl:w-[390px] xl:top-0 xl:left-0"
+                src={show?.image?.original ?? '/images/no-image.png'}
+                alt={show?.name}
+              />
             </div>
-            <div className="flex flex-col justify-center items-center">
-              <div className="info-card">
-                <h3 className="font-playful">Year built</h3>
-                <p className="font-list-title">{data?.ship.year_built ?? '/'}</p>
+            <div className="w-full mt-8 sm:mt-0 flex flex-col justify-center sm:w-[65%]">
+              <div className="flex justify-start items-center">
+                {show?.rating && (
+                  <Rating
+                    className="!flex !text-base md:!text-[1.25rem] !text-gray-600"
+                    name="read-only"
+                    value={show.rating.average}
+                    readOnly
+                  />
+                )}
+                <span className="font-bold ml-4 block">{show?.rating.average} / 5</span>
               </div>
-              <div className="info-card">
-                <h3 className="font-playful">Weight</h3>
-                <p className="font-list-title">{data?.ship.weight_kg ?? '/'}</p>
-              </div>
-              <div className="info-card">
-                <h3 className="font-playful">Class</h3>
-                <p className="font-list-title">{data?.ship.class ?? '/'}</p>
-              </div>
-              <div className="info-card">
-                <h3 className="font-playful">Home port</h3>
-                <p className="font-list-title">{data?.ship.home_port ?? '/'}</p>
-              </div>
-            </div>
-            <div className="flex flex-row justify-start items-center">
-              <div className="info-mission flex-row items-center mx-auto mb-7 mt-10">
-                <h2 className="font-playful">Missions</h2>
-                <div className="relative w-7 h-7 -mb-[14px] ml-[10px]">
-                  <Image src="/images/arrow.svg" layout="fill" />
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-col justify-start items-center">
-              {data?.ship.missions.map((mission: { flight: string; name: string }, index: number) => (
-                <div key={index} className="info-mission">
-                  <h3 className="font-list-title">{mission.name ?? '/'}</h3>
-                  <p className="font-list-subtitle">Flight: {mission.flight ?? '/'}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="flex flex-row justify-start items-center px-4">
-            <div className="info-mission flex-row items-center mx-auto cursor-pointer" onClick={() => router.push('/')}>
-              <div className="bg-blue-1 rounded-full p-2 shadow-xs cursor-pointer">
-                <FaArrowLeft />
-              </div>
-              <p className="font-playful ml-[10px]">Back to the list</p>
+              <h1 className="leading-[1.1] text-[24px] font-bold my-4 md:text-[42px] lg:text-[48px]">{show?.name}</h1>
+              <div id="summary"></div>
             </div>
           </div>
         </div>
+      </article>
+      <main className="max-w-screen-2xl mx-auto w-full flex flex-col md:flex-row md:justify-between px-4 pt-32 xl:pt-72">
+        <div className="mt-8 w-full md:w-[48%]">
+          <h2 className="font-title text-[20px]">Show Info</h2>
+          <ul className="flex flex-wrap md:flex-nowrap md:flex-col">
+            <li className="md:h-[80px] md:items-center md:border-b-2 md:border-b-black md:flex md:py-4 mb-8 md:mb-2 w-[45%] md:w-[100%] mr-[5%] md:mr-0">
+              <p className="font-bold mr-[5rem] min-w-[100px]">Streamed on</p>
+              <p className="text-gray-600">{show?.network.name}</p>
+            </li>
+            <li className="md:h-[80px] md:items-center md:border-b-2 md:border-b-black md:flex md:py-4 mb-8 md:mb-2 w-[45%] md:w-[100%]">
+              <p className="font-bold  mr-[5rem] min-w-[100px]">Schedule</p>
+              <p className="text-gray-600 flex flex-wrap">
+                {show?.schedule.days.map((day, index) => (
+                  <span className='mr-1 after:content-[","] after:last-of-type:content-[""]' key={index}>
+                    {day}
+                  </span>
+                ))}
+              </p>
+            </li>
+            <li className="md:h-[80px] md:items-center md:border-b-2 md:border-b-black md:flex md:py-4 mb-8 md:mb-2 w-[45%] md:w-[100%] mr-[5%] md:mr-0">
+              <p className="font-bold  mr-[5rem] min-w-[100px]">Status</p>
+              <p className="text-gray-600">{show?.status}</p>
+            </li>
+            <li className="md:h-[80px] md:items-center md:border-b-2 md:border-b-black md:flex md:py-4 mb-8 md:mb-2 w-[45%] md:w-[100%]">
+              <p className="font-bold  mr-[5rem] min-w-[100px]">Genres</p>
+              <p className="text-gray-600">
+                {show?.genres.map((g, index) => (
+                  <span className='mr-1 after:content-[","] after:last-of-type:content-[""]' key={index}>
+                    {g}
+                  </span>
+                ))}
+              </p>
+            </li>
+          </ul>
+        </div>
+        {show && <CrewList {...show} />}
       </main>
     </div>
   )

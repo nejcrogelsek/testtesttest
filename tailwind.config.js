@@ -3,6 +3,9 @@ module.exports = {
   content: ['./src/pages/**/*.{js,ts,jsx,tsx}', './src/components/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      breakpoints: {
+        xl: 1200,
+      },
       colors: {
         'blue-1': '#F7F8FB',
         'blue-2': '#D3D7E1',
@@ -15,7 +18,7 @@ module.exports = {
         'indie-flower': ['Indie Flower', 'cursive'],
       },
       fontSize: {
-        title: '40px',
+        title: '34px',
         subtitle: '18px',
         'list-title': '18px',
         'list-subtitle': '14px',
