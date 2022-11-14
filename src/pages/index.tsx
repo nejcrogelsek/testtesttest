@@ -50,15 +50,6 @@ const Home: NextPage = () => {
       </article>
       <main className="relative max-w-screen-2xl mx-auto w-full px-4 py-10 pb-[33rem]">
         <div className="absolute -top-[10rem] left-4 right-4">
-          <div>
-            <button onClick={() => setPageNumber((prev) => prev - 1)} disabled={pageNumber === 1}>
-              Prev page
-            </button>
-            <button onClick={() => setPageNumber((prev) => prev + 1)} disabled={pageNumber === 4}>
-              Next page
-            </button>
-            {isFetching && 'loading'}
-          </div>
           {isError && error instanceof Error ? error.message : <CardList schedules={schedules} />}
         </div>
       </main>
