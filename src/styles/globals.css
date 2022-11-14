@@ -1,0 +1,48 @@
+@import './fonts.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    * {
+        @apply m-0 p-0 box-border;
+    }
+
+    body {
+        @apply font-nunito font-normal m-0 p-0 box-border text-black;
+    }
+
+    img {
+        max-width: 100%;
+    }
+
+    .font-title {
+        @apply font-nunito font-medium text-title leading-[54.56px];
+    }
+
+    .font-subtitle {
+        @apply font-nunito font-medium text-subtitle leading-[24px];
+    }
+
+    .font-list-title {
+        @apply font-nunito font-bold text-list-title leading-[24px];
+    }
+
+    .font-list-subtitle {
+        @apply font-nunito font-medium text-list-subtitle leading-[19.1px];
+    }
+
+    .font-playful {
+        @apply font-indie-flower font-medium text-playful leading-[26.26px];
+    }
+}
+
+@layer components {
+    .info-card {
+        @apply bg-frame bg-no-repeat bg-right flex flex-col justify-center items-center h-[112px] w-full max-w-[327px] mb-4;
+    }
+    .info-mission {
+        @apply flex flex-col justify-start items-start w-full max-w-[327px] mb-4;
+    }
+}
