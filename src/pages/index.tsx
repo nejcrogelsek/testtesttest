@@ -14,9 +14,8 @@ const fetchSchedules = async () => {
 }
 
 const Home: NextPage = () => {
-  const [pageNumber, setPageNumber] = useState<number>(1)
   const [schedules, setSchedules] = useState<ScheduleType[]>([])
-  const { data, isLoading, isError, error, isFetching } = useQuery(['schedules', pageNumber], fetchSchedules)
+  const { data, isLoading, isError, error } = useQuery('schedules', fetchSchedules)
 
   useEffect(() => {
     if (data?.length > 0) {

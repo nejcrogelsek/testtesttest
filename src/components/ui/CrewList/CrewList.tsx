@@ -9,7 +9,6 @@ import { ShowType } from '../../../types/Show'
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner'
 
 const fetchCrew = (id: string) => {
-  console.log('IDDDDDDDDDDDDDDDDD:', id)
   return axios.get(`https://api.tvmaze.com/shows/${id}/cast`)
 }
 const CrewList: NextPage<ShowType> = (show) => {
