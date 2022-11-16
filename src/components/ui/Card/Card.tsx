@@ -1,13 +1,12 @@
 import Rating from '@mui/material/Rating'
 import { NextPage } from 'next'
-import Image from 'next/image'
 import Link from 'next/link'
 
 import { ScheduleType } from '../../../types/Schedule'
 
-const Card: NextPage<ScheduleType> = ({ id, name, show }) => {
+const Card: NextPage<ScheduleType> = ({ name, show }) => {
   return (
-    <li className='flex flex-col rounded-lg shadow-md'>
+    <li className='flex flex-col rounded-lg shadow-md max-w-[210px]'>
       <Link
         className="cursor-pointer h-full"
         href={{
